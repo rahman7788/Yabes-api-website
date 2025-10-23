@@ -1,19 +1,42 @@
 <!doctype html>
-
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>LEGEND EXPERT — Text to Video</title>
   <style>
-    :root{--bg:#05060a;--accent:#7c5cff;--muted:#9aa4b2;--glass:rgba(255,255,255,0.05)}
+    :root {
+      --bg:#05060a;
+      --accent:#7c5cff;
+      --muted:#9aa4b2;
+      --glass:rgba(255,255,255,0.05);
+    }
     *{box-sizing:border-box;font-family:'Poppins',sans-serif;color:#e6eef8}
-    body{margin:0;background:linear-gradient(180deg,#05060a 0%,#0b0f14 100%);display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
-    .container{width:100%;max-width:600px;background:rgba(255,255,255,0.04);padding:30px;border-radius:20px;box-shadow:0 0 20px rgba(0,0,0,0.5)}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,#05060a 0%,#0b0f14 100%);
+      display:flex;justify-content:center;align-items:center;
+      min-height:100vh;padding:20px;
+    }
+    .container{
+      width:100%;max-width:600px;
+      background:rgba(255,255,255,0.04);
+      padding:30px;border-radius:20px;
+      box-shadow:0 0 20px rgba(0,0,0,0.5);
+    }
     h1{text-align:center;color:#fff;font-size:26px;margin-bottom:6px}
     p{text-align:center;color:var(--muted);margin-bottom:24px}
-    textarea{width:100%;padding:12px;border:none;border-radius:12px;background:var(--glass);resize:none;min-height:100px;font-size:15px}
-    button{width:100%;margin-top:14px;padding:12px;border:none;border-radius:12px;background:linear-gradient(90deg,var(--accent),#4fd1c5);font-weight:600;color:#000;cursor:pointer;font-size:16px}
+    textarea{
+      width:100%;padding:12px;border:none;border-radius:12px;
+      background:var(--glass);resize:none;min-height:100px;font-size:15px
+    }
+    button{
+      width:100%;margin-top:14px;padding:12px;border:none;
+      border-radius:12px;background:linear-gradient(90deg,var(--accent),#4fd1c5);
+      font-weight:600;color:#000;cursor:pointer;font-size:16px;
+      transition:all 0.2s ease;
+    }
+    button:hover{opacity:0.9;transform:scale(1.02)}
     .output{margin-top:20px;text-align:center}
     video{width:100%;border-radius:10px;margin-top:12px}
   </style>
@@ -21,13 +44,16 @@
 <body>
   <div class="container">
     <h1>LEGEND EXPERT</h1>
-    <p>Text to Video — Write your prompt below and click Send Prompt</p><textarea id="prompt">A futuristic car driving through neon-lit city streets at night.</textarea>
-<button id="sendBtn">Send Prompt</button>
+    <p>Text to Video — Write your prompt below and click Send Prompt</p>
 
-<div class="output" id="output"></div>
+    <textarea id="prompt">A futuristic car driving through neon-lit city streets at night.</textarea>
+    <button id="sendBtn">Send Prompt</button>
 
-  </div>  <script>
-    const endpoint = 'https://yabes-api.pages.dev/api/ai/video/v1';
+    <div class="output" id="output"></div>
+  </div>
+
+  <script>
+    const endpoint = '/api/proxy'; // proxy route on vercel
     const btn = document.getElementById('sendBtn');
     const promptInput = document.getElementById('prompt');
     const output = document.getElementById('output');
@@ -43,6 +69,7 @@
         });
         const data = await res.json();
         console.log(data);
+
         if(data.video_url || data.url){
           const videoSrc = data.video_url || data.url;
           output.innerHTML = `<video controls autoplay src="${videoSrc}"></video>`;
@@ -53,5 +80,6 @@
         output.innerHTML = `<p style='color:red'>Error: ${err.message}</p>`;
       }
     });
-  </script></body>
+  </script>
+</body>
 </html>
